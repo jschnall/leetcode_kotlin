@@ -2261,74 +2261,7 @@ fun setZeroes(matrix: Array<IntArray>) {
     }
 }
 
-fun isInterleave(s1: String, s2: String, s3: String): Boolean {
-    if (s3.isEmpty() && s1.isEmpty() && s2.isEmpty()) {
-        return true
-    }
-    if (s1.isEmpty()) {
-        return s2 == s3
-    }
-    if (s2.isEmpty()) {
-        return s1 == s3
-    }
-
-    if (s1[0] != s3[0] && s2[0] != s3[0]) {
-        return false
-    }
-
-    var result = false
-
-    if (s1[0] == s3[0]) {
-        result = result || isInterleave(s1.drop(1), s2, s3.drop(1))
-    }
-    if (s2[0] == s3[0]) {
-        result = result || isInterleave(s1, s2.drop(1), s3.drop(1))
-    }
-
-    return result
-}
-
-fun isInterleaveDp(s1: String, s2: String, s3: String): Boolean {
-    val map = mutableMapOf<String, Boolean>()
-    for (i in 1 until s3.length / 2) {
-        isInterleaveInner(s1.takeLast(i), s2.takeLast(i), s3.takeLast(2*i), map)
-    }
-    return isInterleaveInner(s1, s2, s3, map)
-}
-
-fun isInterleaveInner(s1: String, s2: String, s3: String, map: MutableMap<String, Boolean>): Boolean {
-    map[s3]?.let {
-        return it
-    }
-
-    if (s3.isEmpty() && s1.isEmpty() && s2.isEmpty()) {
-        return true
-    }
-    if (s1.isEmpty()) {
-        return s2 == s3
-    }
-    if (s2.isEmpty()) {
-        return s1 == s3
-    }
-
-    if (s1[0] != s3[0] && s2[0] != s3[0]) {
-        return false
-    }
-
-    var result = false
-
-    if (s1[0] == s3[0]) {
-        result = result || isInterleaveInner(s1.drop(1), s2, s3.drop(1), map)
-    }
-    if (s2[0] == s3[0]) {
-        result = result || isInterleaveInner(s1, s2.drop(1), s3.drop(1), map)
-    }
-
-    map[s3] = result
-
-    return result
-}
-
+// 2201. Count Artifacts That Can Be Extracted
 fun digArtifacts(n: Int, artifacts: Array<IntArray>, dig: Array<IntArray>): Int {
     var result = 0
     val set = dig.toList().toSet()
@@ -2365,8 +2298,24 @@ fun artifactToCells(artifact: IntArray): List<IntArray> {
     return cells
 }
 
+// 11. Container With Most Water
+fun maxArea(height: IntArray): Int {
+    var start = 0
+    var end = height.size - 1
+    var maxArea = (end - start) * Math.min(height[start], height[end])
+    var area = 0
 
-
+    while (start < end) {
+        if (height[start] < height[end]) {
+            start++
+        } else {
+            end--
+        }
+        area = (end - start) * Math.min(height[start], height[end])
+        maxArea = Math.max(maxArea, area)
+    }
+    return maxArea
+}
 
 
 
