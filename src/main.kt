@@ -2317,6 +2317,26 @@ fun maxArea(height: IntArray): Int {
     return maxArea
 }
 
+fun topKFrequent(nums: IntArray, k: Int): IntArray {
+    val map = nums.asList().groupingBy { it }.eachCount()
+
+    val minHeap = PriorityQueue<Map.Entry<Int, Int>>(compareBy { it.value })
+    map.forEach {
+        minHeap.add(it)
+    }
+
+    while (minHeap.size > k) {
+        minHeap.remove()
+    }
+
+    val result = IntArray(k)
+    var i = 0
+    while (minHeap.isNotEmpty()) {
+        result[i] = minHeap.remove().key
+        i ++
+    }
+    return result
+}
 
 
 
