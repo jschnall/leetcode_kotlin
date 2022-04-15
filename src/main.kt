@@ -2317,10 +2317,11 @@ fun maxArea(height: IntArray): Int {
     return maxArea
 }
 
+// 347. Top K Frequent Elements
 fun topKFrequent(nums: IntArray, k: Int): IntArray {
     val map = nums.asList().groupingBy { it }.eachCount()
-
     val minHeap = PriorityQueue<Map.Entry<Int, Int>>(compareBy { it.value })
+
     map.forEach {
         minHeap.add(it)
     }
@@ -2333,12 +2334,35 @@ fun topKFrequent(nums: IntArray, k: Int): IntArray {
     var i = 0
     while (minHeap.isNotEmpty()) {
         result[i] = minHeap.remove().key
-        i ++
+        i++
     }
+
     return result
 }
 
+// 86. Partition List
+fun partition(head: ListNode?, x: Int): ListNode? {
+    var lHead: ListNode? = ListNode(0)
+    var gHead: ListNode? = ListNode(0)
 
+    var lPtr = lHead
+    var gPtr = gHead
+    var ptr = head
 
+    while (ptr != null) {
+        if (ptr.`val` < x) {
+            lPtr?.next = ptr
+            lPtr = lPtr?.next
+        } else {
+            gPtr?.next = ptr
+            gPtr = gPtr?.next
+        }
+        ptr = ptr.next
+    }
+    lPtr?.next = gHead?.next
+    gPtr?.next = null
+
+    return lHead?.next
+}
 
 
