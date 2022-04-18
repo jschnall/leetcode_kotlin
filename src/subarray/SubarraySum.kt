@@ -1,4 +1,4 @@
-package subarraysum
+package subarray
 
 import kotlin.test.assertEquals
 
