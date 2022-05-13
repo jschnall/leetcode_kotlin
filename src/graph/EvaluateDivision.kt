@@ -5,6 +5,7 @@ import java.util.*
 class Node(var data: String, val neighbors: MutableSet<Edge> = mutableSetOf())
 class Edge(val start: Node, val end: Node, val cost: Double)
 
+// 399. Evaluate Division
 fun calcEquation(equations: List<List<String>>, values: DoubleArray, queries: List<List<String>>): DoubleArray {
     val graph = mutableMapOf<String, Node>()
 
