@@ -19,7 +19,7 @@ class TinyUrl {
         longToPath[longUrl] = sb.toString()
         updateKey()
 
-        return shortUrlM
+        return shortUrl
     }
 
     private fun updateKey() {
