@@ -3,7 +3,7 @@ package tinyurl
 import java.net.URL
 import kotlin.test.assertEquals
 
-class TinyUrl() {
+class TinyUrl {
     private val pathToLong = mutableMapOf<String, String>()
     private val longToPath = mutableMapOf<String, String>()
     private var sb = StringBuilder("0")
@@ -19,7 +19,7 @@ class TinyUrl() {
         longToPath[longUrl] = sb.toString()
         updateKey()
 
-        return shortUrl
+        return shortUrlM
     }
 
     private fun updateKey() {
@@ -58,9 +58,21 @@ class TinyUrl() {
     }
 }
 
+fun randomString(length: Int): String {
+    val allowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9')
+    return (1..length)
+        .map { allowedChars.random() }
+        .joinToString("")
+}
+
 fun main(args: Array<String>) {
     val encoder = TinyUrl()
+
     assertEquals("https://www.google.com", encoder.decode(encoder.encode("https://www.google.com")))
     assertEquals("https://www.google.com", encoder.decode(encoder.encode("https://www.google.com")))
     assertEquals("https://www.leetcode.com", encoder.decode(encoder.encode("https://www.leetcode.com")))
+
+    (1 .. 1000).forEach {
+        println(encoder.encode(randomString(25)))
+    }
 }
