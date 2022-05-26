@@ -1516,6 +1516,33 @@ fun wordBreakRec(s: String, wordMap: Map<Int, List<String>>, dpMap: Map<Int, Boo
     return false
 }
 
+fun wordBreakIter(s: String, wordDict: List<String>): Boolean {
+    val wordMap = wordDict.groupBy { it.first() }
+    var currentSet = mutableSetOf(s)
+
+    while (currentSet.isNotEmpty()) {
+        val set = mutableSetOf<String>()
+
+        currentSet.forEach { remaining ->
+            wordMap[remaining.first()]?.forEach { prefix ->
+                if (remaining.startsWith(prefix)) {
+                    val newRemaining = remaining.substringAfter(prefix)
+
+                    if (newRemaining.isEmpty()) {
+                        return true
+                    }
+                    if (newRemaining.length < remaining.length) {
+                        set.add(newRemaining)
+                    }
+                }
+            }
+        }
+        currentSet = set
+    }
+
+    return false
+}
+
 // 382. Linked List Random Node
 class LinkedListRandNode(val head: ListNode?) {
     private val size = findSize()
