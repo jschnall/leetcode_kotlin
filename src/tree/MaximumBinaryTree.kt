@@ -1,8 +1,6 @@
 package tree
 
 import TreeNode
-import junk.junk
-import kotlin.test.assertEquals
 
 // 654. Maximum Binary Tree
 fun constructMaximumBinaryTree(nums: IntArray): TreeNode? {
@@ -30,4 +28,8 @@ fun buildMBT(nums: IntArray, start: Int, end: Int): TreeNode? {
     root.right = buildMBT(nums, maxIndex + 1, end)
 
     return root
+}
+
+fun junk() {
+    
 }

@@ -1,5 +1,6 @@
 import java.lang.Exception
 import java.lang.Math.*
+import java.math.BigInteger
 import java.util.*
 import kotlin.math.ceil
 import kotlin.math.max
@@ -2095,7 +2096,7 @@ fun sortedMerge(l1: ListNode?, l2: ListNode?): ListNode? {
         return l1
     }
 
-    if (l1?.`val` < l2?.`val`) {
+    if (l1.`val` < l2.`val`) {
         result = l1
         result.next = sortedMerge(l1.next, l2)
     } else {
@@ -2392,4 +2393,47 @@ fun partition(head: ListNode?, x: Int): ListNode? {
     return lHead?.next
 }
 
+fun majorityElement(nums: IntArray): List<Int> {
+    return nums.groupBy { it }.filter { it.value.size > nums.size / 3 }.keys.toList()
+}
 
+// 1129. ShortestPath
+data class Vertex(val id: Int, val isRed: Boolean, val cost: Int)
+
+fun shortestAlternatingPaths(n: Int, redEdges: Array<IntArray>, blueEdges: Array<IntArray>): IntArray {
+    val redMap = redEdges.groupBy({ it[0] }, { it[1]})
+    val blueMap = blueEdges.groupBy({ it[0] }, { it[1]})
+    val redCosts = IntArray(n) { Integer.MAX_VALUE }
+    val blueCosts = IntArray(n) { Integer.MAX_VALUE }
+    val queue: Queue<Vertex> = LinkedList()
+
+    redCosts[0] = 0
+    blueCosts[0] = 0
+    redMap[0]?.forEach { neighbor ->
+        queue.add(Vertex(neighbor, true, 1))
+        redCosts[neighbor] = 1
+    }
+    blueMap[0]?.forEach { neighbor ->
+        queue.add(Vertex(neighbor, false, 1))
+        blueCosts[neighbor] = 1
+    }
+
+    while (!queue.isEmpty()) {
+        val v = queue.remove()
+        val neighbors = if (v.isRed) blueMap[v.id] else redMap[v.id]
+        val costs = if (v.isRed) blueCosts else redCosts
+
+        neighbors?.forEach { neighbor ->
+            val cost = v.cost + 1
+            if (cost < costs[neighbor]) {
+                costs[neighbor] = cost
+                queue.add(Vertex(neighbor, !v.isRed, cost))
+            }
+        }
+    }
+
+    val result = redCosts.mapIndexed { i, cost -> minOf(cost, blueCosts[i])}
+        .map { if (it == Integer.MAX_VALUE) -1 else it}.toIntArray()
+    result[0] = 0
+    return result
+}
